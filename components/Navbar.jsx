@@ -56,7 +56,7 @@ const Navbar = () => {
 								: 'absolute -top-1 -right-1 border-2 border-blue-900 bg-white rounded-full w-[20px] h-[20px] font-bold text-center text-xs text-blue-900'
 						}
 					>
-						{cart.length}
+						{cart.map((item) => item.quantity).reduce((a, b) => a + b, 0)}
 					</div>
 				</Link>
 			</div>

@@ -23,7 +23,15 @@ const Watch = ({ watch }) => {
 	const [added, setAdded] = useState(false);
 
 	const handleAddToCart = () => {
-		context.setCart([...context.cart, watch]);
+		if (context.cart.some((w) => w.id === watch.id)) {
+			context.setCart(
+				context.cart.map((w) =>
+					w.id === watch.id ? { ...w, quantity: w.quantity + 1 } : w
+				)
+			);
+		} else {
+			context.setCart([...context.cart, { ...watch, quantity: 1 }]);
+		}
 		setAdded(true);
 		setTimeout(() => {
 			setAdded(false);
