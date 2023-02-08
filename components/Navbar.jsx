@@ -1,22 +1,50 @@
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import AppContext from './AppContext';
 
 const Navbar = () => {
 	const { cart } = useContext(AppContext);
+	const [search, setSearch] = useState('');
+
+	const handleSearch = () => {
+		location.href = `/search?q=${search}`;
+	};
 
 	return (
-		<nav className="flex justify-between items-center bg-blue-900 text-white px-8 py-4 fixed top-0 right-0 left-0">
+		<nav className="flex justify-between items-center bg-amber-50 px-8 py-2 fixed top-0 right-0 left-0 z-50">
 			<div className="flex items-center space-x-6">
-				<p className="text-2xl font-bold">Clothing Store</p>
+				<div className="text-2xl font-bold">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						className="w-8 h-8"
+					>
+						<path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
+					</svg>
+				</div>
 				<div className="flex items-center space-x-4">
-					<Link href="/watches">Watches</Link>
-					<Link href="/ties">Ties</Link>
+					<Link
+						className="hover:text-blue-400 transition duration-200"
+						href="/watches"
+					>
+						Watches
+					</Link>
+					{/* <Link href="/ties">Ties</Link> */}
 				</div>
 			</div>
-			<div className="border-neutral-100 border-2 px-3 py-2 rounded-md flex items-center w-1/3">
-				<input type="text" className="outline-none bg-transparent w-full" />
-				<button>
+			<div className="border-neutral-400 bg-white border px-3 py-2 rounded-md flex items-center w-1/3">
+				<input
+					onChange={(e) => setSearch(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							handleSearch();
+						}
+					}}
+					type="text"
+					className="outline-none bg-transparent w-full"
+				/>
+				<button onClick={handleSearch}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -34,29 +62,33 @@ const Navbar = () => {
 				</button>
 			</div>
 			<div>
-				<Link href="/cart" className="relative">
+				<Link
+					href="/cart"
+					className="relative flex items-center justify-center w-14 h-14 rounded-md hover:bg-neutral-300 transition duration-200 group"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
 						viewBox="0 0 24 24"
-						strokeWidth={1.5}
-						stroke="currentColor"
-						className="w-8 h-8"
+						fill="currentColor"
+						className="w-8 h-8 group-hover:text-blue-900 transition duration-200"
 					>
 						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+							fillRule="evenodd"
+							d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3zm-3 8.25a3 3 0 106 0v-.75a.75.75 0 011.5 0v.75a4.5 4.5 0 11-9 0v-.75a.75.75 0 011.5 0v.75z"
+							clipRule="evenodd"
 						/>
 					</svg>
+
 					<div
 						className={
 							!cart.length
 								? 'hidden'
-								: 'absolute -top-1 -right-1 border-2 border-blue-900 bg-white rounded-full w-[20px] h-[20px] font-bold text-center text-xs text-blue-900'
+								: 'absolute top-2 right-2 bg-blue-300 rounded-full w-[20px] h-[20px] font-bold text-center text-[11px] text-black flex items-center justify-center'
 						}
 					>
-						{cart.map((item) => item.quantity).reduce((a, b) => a + b, 0)}
+						<p>
+							{cart.map((item) => item.quantity).reduce((a, b) => a + b, 0)}
+						</p>
 					</div>
 				</Link>
 			</div>

@@ -1,13 +1,16 @@
-import Navbar from 'components/Navbar';
-import Image from 'next/image';
-import Link from 'next/link';
-import supabase from 'lib/supabaseClient';
-import AppContext from 'components/AppContext';
 import Footer from 'components/Footer';
+import Navbar from 'components/Navbar';
+import Link from 'next/link';
+import Image from 'next/image';
+import supabase from 'lib/supabaseClient';
+import { useRouter } from 'next/router';
 
-// set up getStaticProps to fetch data from supabase
-export async function getStaticProps() {
-	const { data, error } = await supabase.from('watches').select();
+export async function getServerSideProps(req, res) {
+	let q = req.query.q;
+	const { data, error } = await supabase
+		.from('watches')
+		.select(`*`)
+		.ilike(`name`, `%${q}%`);
 
 	if (error) {
 		return {
@@ -22,28 +25,17 @@ export async function getStaticProps() {
 	};
 }
 
-export default function Home({ watches }) {
+const Search = ({ watches }) => {
+	const { query } = useRouter();
+
 	return (
 		<>
 			<Navbar />
-			<div className="mt-28 px-8">
+			<div className="mt-28 px-8 h-screen">
 				<div className="my-10 flex items-center space-x-2 text-sm">
-					<p>Search </p>
-					<div>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="currentColor"
-							className="w-4 h-4"
-						>
-							<path
-								fillRule="evenodd"
-								d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</div>
-					<p className="text-blue-400">Watches</p>
+					<p>
+						Showing {watches.length} result for <strong>"{query.q}"</strong>
+					</p>
 				</div>
 				<div className="grid grid-cols-4 gap-2">
 					{watches &&
@@ -73,4 +65,6 @@ export default function Home({ watches }) {
 			<Footer />
 		</>
 	);
-}
+};
+
+export default Search;

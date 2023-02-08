@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import AppContext from 'components/AppContext';
 import { useState } from 'react';
+import Footer from 'components/Footer';
 
 export async function getServerSideProps({ params }) {
 	const { data: watch, error } = await supabase
@@ -93,7 +94,7 @@ const Watch = ({ watch }) => {
 								disabled={added}
 								className={
 									added
-										? 'bg-blue-600 rounded-md text-white text-center px-8 py-2 font-semibold cursor-not-allowed'
+										? 'bg-blue-400 rounded-md text-white text-center px-8 py-2 font-semibold cursor-not-allowed'
 										: 'bg-blue-900 hover:bg-blue-600 rounded-md text-white text-center px-8 py-2 font-semibold'
 								}
 							>
@@ -104,6 +105,7 @@ const Watch = ({ watch }) => {
 					</div>
 				)}
 			</div>
+			<Footer />
 		</>
 	);
 };
