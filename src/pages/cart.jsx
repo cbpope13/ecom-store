@@ -11,7 +11,7 @@ const Cart = () => {
 	return (
 		<>
 			<Navbar />
-			<div className="h-screen overflow-y-hidden">
+			<div className="min-h-screen overflow-y-hidden">
 				{context.cart.length > 0 ? (
 					<div className="mt-28">
 						<h1 className="text-2xl font-bold text-blue-900 text-center">
@@ -35,16 +35,16 @@ const Cart = () => {
 										className="flex border-t border-neutral-200 py-4 justify-between"
 									>
 										<div className="flex space-x-4">
-											<div className="bg-neutral-300 p-4">
+											<div className="p-4">
 												<Image
-													src={item.src}
-													alt={item.name}
-													width={50}
+													src={item.image}
+													alt={item.title}
+													width={75}
 													height={50}
 												/>
 											</div>
 											<div className="flex flex-col space-y-2">
-												<h1 className="text-lg">{item.name}</h1>
+												<h1 className="text-lg">{item.title}</h1>
 												<p className="font-semibold">${item.price}</p>
 											</div>
 										</div>
