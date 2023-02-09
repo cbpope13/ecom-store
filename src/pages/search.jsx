@@ -2,7 +2,7 @@ import Footer from 'components/Footer';
 import Navbar from 'components/Navbar';
 import Link from 'next/link';
 import Image from 'next/image';
-import supabase from 'lib/supabaseClient';
+// import supabase from 'lib/supabaseClient';
 import { useRouter } from 'next/router';
 
 export async function getServerSideProps(req) {

@@ -1,8 +1,7 @@
 import Navbar from 'components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
-import supabase from 'lib/supabaseClient';
-import AppContext from 'components/AppContext';
+// import supabase from 'lib/supabaseClient';
 import Footer from 'components/Footer';
 
 // set up getStaticProps to fetch data from supabase
