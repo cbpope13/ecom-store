@@ -1,5 +1,5 @@
 import Navbar from 'components/Navbar';
-import supabase from 'lib/supabaseClient';
+// import supabase from 'lib/supabaseClient';
 import Image from 'next/image';
 import { useContext } from 'react';
 import AppContext from 'components/AppContext';
@@ -7,14 +7,12 @@ import { useState } from 'react';
 import Footer from 'components/Footer';
 
 export async function getServerSideProps({ params }) {
-	const { data: watch, error } = await supabase
-		.from('watches')
-		.select('*')
-		.eq('id', params.id);
+	const result = await fetch(`https://fakestoreapi.com/products/${params.id}`);
+	const watch = await result.json();
 
 	return {
 		props: {
-			watch: watch[0],
+			watch,
 		},
 	};
 }
@@ -42,22 +40,22 @@ const Watch = ({ watch }) => {
 	let rating = [1, 2, 3, 4, 5];
 
 	return (
-		<>
+		<div className="h-screen">
 			<Navbar />
-			<div className="mt-28 tracking-wider">
+			<div className="mt-28 tracking-wider h-full">
 				{watch && (
-					<div className="flex w-full px-16 space-x-10">
-						<div className="w-full flex items-center justify-center bg-neutral-300 py-4 h-[600px]">
+					<div className="flex w-full px-16 space-x-10 pt-20">
+						<div className="w-full flex items-center justify-center">
 							<Image
-								width={200}
+								width={300}
 								height={200}
-								src={watch.src}
-								alt={watch.name}
+								src={watch.image}
+								alt={watch.title}
 							/>
 						</div>
 						<div className="w-full flex flex-col space-y-10">
 							<div className="flex flex-col space-y-2">
-								<h1 className="text-xl">{watch.name}</h1>
+								<h1 className="text-xl">{watch.title}</h1>
 								<p className="font-semibold">${watch.price}</p>
 								<div className="flex items-center">
 									{rating.map((r) => (
@@ -79,14 +77,7 @@ const Watch = ({ watch }) => {
 							</div>
 
 							<div>
-								<p>
-									Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-									Dolore ab eos doloremque enim repellendus aperiam harum. Nulla
-									voluptas cupiditate dolores iste cumque mollitia maiores non
-									iusto blanditiis, veritatis nihil laudantium eaque natus
-									accusantium quam ullam adipisci est ipsam temporibus vitae.
-									Ullam officia ex quos ratione corporis praesentium eos odit a
-								</p>
+								<p>{watch.description}</p>
 							</div>
 
 							<button
@@ -106,7 +97,7 @@ const Watch = ({ watch }) => {
 				)}
 			</div>
 			<Footer />
-		</>
+		</div>
 	);
 };
 

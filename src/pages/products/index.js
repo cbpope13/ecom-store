@@ -1,40 +1,26 @@
-import Footer from 'components/Footer';
 import Navbar from 'components/Navbar';
-import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Footer from 'components/Footer';
 
-export async function getServerSideProps({ params }) {
-	const result = await fetch(
-		`https://fakestoreapi.com/products/category/${params.id}`
-	);
+export async function getServerSideProps() {
+	const result = await fetch('https://api.storerestapi.com/products');
 	const watches = await result.json();
 
 	return {
 		props: {
-			watches,
+			watches: watches.data,
 		},
 	};
 }
 
-const Category = ({ watches }) => {
-	const { query } = useRouter();
-	//capitalize first letter in each word
-	const capitalize = (str) => {
-		return str
-			.split(' ')
-			.map((word) => word[0].toUpperCase() + word.slice(1))
-			.join(' ');
-	};
-
-	const path = capitalize(query.id);
-
+export default function Home({ watches }) {
 	return (
 		<>
 			<Navbar />
 			<div className="mt-28 px-8">
 				<div className="my-10 flex items-center space-x-2 text-sm">
-					<p>Search</p>
+					<p>Search </p>
 					<div>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -49,28 +35,13 @@ const Category = ({ watches }) => {
 							/>
 						</svg>
 					</div>
-					<p>Categories </p>
-					<div>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="currentColor"
-							className="w-4 h-4"
-						>
-							<path
-								fillRule="evenodd"
-								d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</div>
-					<p className="text-blue-400">{path}</p>
+					<p className="text-blue-400">All Products</p>
 				</div>
 				<div className="grid grid-cols-4 gap-4">
 					{watches &&
 						watches.map((watch) => (
 							<Link
-								href={`/products/${watch.id}`}
+								href={`/watches/${watch.id}`}
 								className="flex flex-col justify-between"
 								key={watch.id}
 							>
@@ -94,6 +65,4 @@ const Category = ({ watches }) => {
 			<Footer />
 		</>
 	);
-};
-
-export default Category;
+}

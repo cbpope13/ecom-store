@@ -1,32 +1,23 @@
 import Navbar from 'components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
-// import supabase from 'lib/supabaseClient';
+import supabase from 'lib/supabaseClient';
+import AppContext from 'components/AppContext';
 import Footer from 'components/Footer';
 
 // set up getStaticProps to fetch data from supabase
-// export async function getStaticProps() {
-// 	const { data, error } = await supabase.from('watches').select();
+export async function getStaticProps() {
+	const { data, error } = await supabase.from('watches').select();
 
-// 	if (error) {
-// 		return {
-// 			notFound: true,
-// 		};
-// 	}
-
-// 	return {
-// 		props: {
-// 			watches: data,
-// 		},
-// 	};
-// }
-export async function getServerSideProps() {
-	const result = await fetch('https://fakestoreapi.com/products');
-	const watches = await result.json();
+	if (error) {
+		return {
+			notFound: true,
+		};
+	}
 
 	return {
 		props: {
-			watches,
+			watches: data,
 		},
 	};
 }
@@ -52,9 +43,9 @@ export default function Home({ watches }) {
 							/>
 						</svg>
 					</div>
-					<p className="text-blue-400">All Products</p>
+					<p className="text-blue-400">Watches</p>
 				</div>
-				<div className="grid grid-cols-4 gap-4">
+				<div className="grid grid-cols-4 gap-2">
 					{watches &&
 						watches.map((watch) => (
 							<Link
@@ -62,17 +53,17 @@ export default function Home({ watches }) {
 								className="flex flex-col justify-between"
 								key={watch.id}
 							>
-								<div className="h-full flex items-center p-4 relative group">
+								<div className="bg-neutral-300 h-full flex items-center p-4 relative group">
 									<Image
-										src={watch.image}
-										alt={watch.title}
-										width={200}
+										src={watch.src}
+										alt={watch.name}
+										width={100}
 										height={200}
 										className="flex mx-auto group-hover:scale-110 transition duration-300 ease-in-out"
 									/>
 								</div>
 								<div className="flex flex-col items-center space-y-2 py-2 mb-10">
-									<h3 className="text-lg">{watch.title}</h3>
+									<h3 className="text-lg">{watch.name}</h3>
 									<p className="text-lg font-bold">${watch.price}</p>
 								</div>
 							</Link>
